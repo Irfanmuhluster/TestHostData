@@ -19,3 +19,4 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - php artisan db:seed
 - php artisan serve
 - ngrok http 8000
+- daftarkan url yg didapat dari ngrok ke duitku
