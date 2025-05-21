@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\MemberController;
@@ -24,16 +25,18 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
-        return redirect()->route('admin.product');
+        return redirect()->route('admin.index');
     } elseif (auth()->user()->role === 'member') {
         return redirect()->route('member.product');
+    } elseif (auth()->user()->role === 'supervisor') {
+        return redirect()->route('supervisor.index');
     }
     abort(403, 'Unauthorized');
 });
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/home', [ProductController::class,'index'])->name('admin.product');
+    Route::get('/admin/dashboard', [AdminController::class,'index'])->name('admin.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -53,6 +56,10 @@ Route::middleware(['auth', 'member'])->group(function () {
     Route::post('/member/deposit/store', [DepositController::class, 'store'])->name('member.deposit.store');
     Route::post('/member/deposit/callback', [DepositController::class, 'callback'])->name('member.deposit.callback');
     Route::post('/member/deposit/proceed', [DepositController::class, 'proceed'])->name('member.deposit.proceed');
+});
+
+Route::middleware(['auth', 'supervisor'])->group(function () {
+    Route::get('/supervisor/dashboard', [AdminController::class,'index'])->name('supervisor.index');
 });
 
 

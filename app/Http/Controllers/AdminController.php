@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -14,9 +15,9 @@ class AdminController extends Controller
     public function index()
     {
         //
-        $products = product::all();
-        // dd($products);
-        return view('admin.home', compact('products'));
+        $members = User::where("role","member")->get();
+
+        return view('admin.home', compact('members'));
     }
 
     /**
